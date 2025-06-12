@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slash-Ta-Blook WEEPTAKES™</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    /* Reset y base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%;
+      background: #000;
+      color: #fff200;
+      font-family: 'Press Start 2P', monospace;
+      overflow-x: hidden;
+    }
+    header {
+      text-align: center; padding: 2rem 0;
+    }
+    .logo-img {
+      width: 300px;
+      image-rendering: pixelated;
+      animation: float 2.5s ease-in-out infinite;
+      cursor: pointer;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    body::before {
+      content: "";
+      pointer-events: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 2px 3px),
+                  repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 1px, transparent 2px 3px);
+      z-index: 1000;
+      animation: crt-flicker 0.15s infinite;
+    }
+    @keyframes crt-flicker {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 0.2; }
+    }
+    main { position: relative; z-index: 10; padding-bottom: 4rem; }
+    .dialogue-box {
+      display: flex; align-items: flex-start; justify-content: center;
+      gap: 1rem; background: #000; border: 3px solid #FFD700;
+      padding: 1rem; border-radius: 8px; box-shadow: 0 0 10px #FFD700;
+      max-width: 90%; margin: 2rem auto;
+    }
+    .speaker {
+      width: 100px; image-rendering: pixelated;
+      animation: shake 0.3s ease infinite;
+    }
+    @keyframes shake {
+      0%,100% { transform: translate(0); }
+      25% { transform: translateX(-2px); }
+      50% { transform: translateX(2px); }
+      75% { transform: translateX(-2px); }
+    }
+    .dialogue-panel {
+      background: #000; border: 2px solid #FFD700;
+      padding: 0.5rem; box-shadow: 0 0 8px #FFD700;
+      color: #FFD700; font-size: 14px; line-height: 1.6;
+      width: 320px; position: relative;
+    }
+    .indicator {
+      font-size: 10px; color: #AAA; text-align: center;
+      margin-top: 0.5rem; animation: blink 1s steps(2, start) infinite;
+    }
+    @keyframes blink { to { visibility: hidden; } }
+    .description-box {
+      display: flex; justify-content: center;
+      background: transparent; border: none; padding: 0;
+      max-width: 100%; margin-top: 2rem;
+    }
+    .description-panel {
+      background: #000; border: none; padding: 1rem;
+      box-shadow: 0 0 8px #FFD700;
+      color: #FFD700; font-size: 16px; line-height: 1.8;
+      width: 80%; max-width: 800px; min-height: 300px;
+      position: relative;
+    }
+    .prizes {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 1rem; margin: 2rem auto; max-width: 900px;
+      opacity: 0; transition: opacity 0.5s;
+    }
+    .prizes.visible { opacity: 1; }
+    .prize {
+      background: #111; border: 2px solid #FFD700;
+      padding: 1rem; width: 200px;
+      box-shadow: 0 0 10px #FFD700;
+      opacity: 0; transform: translateY(20px);
+    }
+    .prize.visible { animation: fadeInUp 0.5s forwards; }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .prize img { width: 80px; image-rendering: pixelated; margin-bottom: 0.5rem; }
+    .prize h4 { font-size: 12px; margin-bottom: 0.5rem; }
+    .prize p { font-size: 10px; }
+    .banner {
+      text-align: center; color: #FFD700; font-size: 14px;
+      margin-top: 2rem; animation: flicker 1s infinite;
+    }
+    @keyframes flicker {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    .coin { position: fixed; top: -40px; width: 24px; image-rendering: pixelated; pointer-events: none; z-index: 1; animation: fall linear infinite; }
+    @keyframes fall { 0% { transform: translateY(0); } 100% { transform: translateY(110vh); } }
+    .balloon { position: fixed; bottom: -60px; pointer-events: none; z-index: 0; image-rendering: pixelated; opacity: 0.6; animation: rise linear infinite; }
+    @keyframes rise { 0% { transform: translateY(0); } 100% { transform: translateY(-110vh); } }
+    .info-text {
+      text-align: center; color: #FFD700; font-size: 12px;
+      font-family: 'Press Start 2P', monospace; margin-top: 1rem;
+    }
+    footer { text-align: center; font-size: 10px; padding: 1rem 0; color: #AAA; }
+  </style>
+</head>
+<body>
+  <header>
+    <img id="logo" class="logo-img" src="https://i.postimg.cc/HWKtcj3v/Logo-removebg-preview.png" alt="Logo Slash-Ta-Blook">
+  </header>
+  <main>
+    <div class="dialogue-box">
+      <img src="https://i.postimg.cc/256BdbdB/pixil-frame-0-27.png" alt="Slash-Ta-Blook" class="speaker">
+      <div class="dialogue-panel">
+        <div id="dialogueText">Haz clic para comenzar...</div>
+        <div class="indicator">[Haz clic para continuar]</div>
+      </div>
+    </div>
+    <div class="description-box">
+      <div class="description-panel">
+        <div id="descriptionText">Cargando descripción...</div>
+        <div class="indicator">[Haz clic para continuar]</div>
+      </div>
+    </div>
+    <div id="prizes" class="prizes">
+      <div class="prize">
+        <img src="https://i.postimg.cc/SKJ1QdXj/imagen-2025-06-10-181755796.png" alt="15$ en Steam">
+        <h4>15$ en Steam</h4>
+        <p>Ideal para comprarte medio juego indie, o tres de esos que nadie juega.</p>
+      </div>
+      <div class="prize">
+        <img src="https://i.postimg.cc/2jMkC9VL/imagen-2025-06-10-181849486-removebg-preview.png" alt="Undertale Steam">
+        <h4>Undertale Steam</h4>
+        <p>El clásico moralmente ambiguo que todos deben jugar. Otra vez.</p>
+      </div>
+      <div class="prize">
+        <img src="https://i.postimg.cc/X75CWC73/imagen-2025-06-10-182138294.png" alt="Deltarune">
+        <h4>Deltarune</h4>
+        <p>Todos los capítulos actuales (y quizás los futuros si Toby se apura).</p>
+      </div>
+      <div class="prize">
+        <img src="https://i.postimg.cc/DfP0nktj/imagen-2025-06-10-182245136-removebg-preview.png" alt="30$ por Paypal">
+        <h4>30$ por Paypal</h4>
+        <p>Dinero real. Lo juramos. Bueno... en teoría.</p>
+      </div>
+      <div class="prize">
+        <img src="https://i.postimg.cc/DfP0nktj/imagen-2025-06-10-182245136-removebg-preview.png" alt="Roles Exclusivos">
+        <h4>Roles Exclusivos</h4>
+        <p>¡Recompensas diarias, títulos dudosos y ventaja cómica en eventos!</p>
+      </div>
+    </div>
+    <div class="banner">MUCHAS OTRAS COSAS PRÓXIMAMENTE EN LA SLASH-TA-BLOOK WEEEPTAKESSSSS!!!!!!!!!</div>
+    <div class="info-text">
+      <a href="https://discord.gg/ewVhWTKsn9" target="_blank" style="display:inline-block;margin-top:0.5rem;padding:0.75rem 1.5rem;background:#FFD700;color:#000;border:2px solid #000;font-family:'Press Start 2P',monospace;text-decoration:none;">AQUÍ PARA MÁS INFORMACIÓN</a>
+    </div>
+  </main>
+  <footer>(Esto debería ser una donación, pero no nos alcanzaba. Evento caritativo para ustedes)</footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const dialogueLines = [
+        "¡Saludos desde el Underground! Soy Slash-ta Blook™, presentador de la WEEPTAKES™.",
+        "Transmitiendo desde mi suite ligeramente electrificada...",
+        "Participa en este evento 100% legítimo lleno de premios posiblemente reales.",
+        "¿Qué podrías ganar? Dinero (?), objetos misteriosos y reconocimiento dudoso.",
+        "Si pierdes, culpa a la tipografía pixelada.",
+        "Entrégame tus datos, tu alma o un chicle usado. ¡No juzgo!",
+        "¡Todo esto, ahora en tu pantalla! ¿Qué podría salir mal?"
+      ];
+      const descriptionLines = [
+        "¡Hola, consumidor desesperado y/o víctima voluntaria!",
+        "Soy Slash-Ta-Blook™, CEO, fundador, conserje, y terapeuta a domicilio de Slash-Ta-Blook Inc.™",
+        "Y hoy... te invito al evento más profesionalmente improvisado del multiverso:",
+        "✨ LA SLASH-TA-BLOOK WEEPTAKES™ ✨",
+        "Un evento que suena legal.",
+        "Huele a estafa.",
+        "Y se ve... sorprendentemente bien hecho en Paint.",
+        "❓ ¿QUÉ ES ESTO?",
+        "Es un concurso.",
+        "Es un sorteo.",
+        "Es una trampa emocional envuelta en cartón glamoroso.",
+        "Donde puedes ganar:",
+        "✅ Premios materiales",
+        "✅ Recompensas psicológicas",
+        "✅ Y el derecho a sospechar de todo lo que te rodea",
+        "🎁 ¿QUÉ PUEDES GANAR?",
+        "Prepárate para el lujo absurdo, cortesía de nuestros auspiciantes invisibles:",
+        "* Un chicle usado por Jerry™, con certificado de “masticación aprobada”.",
+        "* Una estatua 3D de Trashy™, ideal para ignorarla por completo.",
+        "* Un VHS maldito, que nadie recuerda haber grabado, pero ahí está.",
+        "* Papel “Toiletus Prime™”, con un 12% menos arrepentimiento por uso.",
+        "* Juegos digitales disponibles entre las 3:14 y 3:15 AM (según la fase lunar).",
+        "* El rol de “Perdedor Legendario”, reservado para quienes se registren 7 veces por error.",
+        "* Dinero real (puede variar entre chocolate, simbolismo o aire comprimido).",
+        "🧪 ¿CÓMO FUNCIONA?",
+        "1. Haces click.",
+        "2. Te ilusionas.",
+        "3. El sistema decide si mereces algo... o solo una reflexión existencial.",
+        "Nuestro algoritmo fue entrenado con:",
+        "* Sueños rotos",
+        "* Contratos sin leer",
+        "* Energía de espejo fracturado",
+        "100% aleatorio.",
+        "0% responsabilidad.",
+        "📊 ¿POR QUÉ EXISTE ESTO?",
+        "Porque Slash-Ta-Blook™ cree en el poder de distraerse de su propia tristeza haciendo concursos absurdos.",
+        "“No puedo comprar amor...,",
+        "Pero sí puedo imprimir cupones de afecto temporal.”",
+        "Esta no es una página.",
+        "Es un espectáculo corporativo con aroma a nostalgia, desesperación y estilo CRT.",
+        "Es arte en forma de error administrativo.",
+        "⚠️ DISCLAIMER",
+        "* Slash-Ta-Blook Inc.™ no se responsabiliza por:",
+        "  Maleficios",
+        "  Daños psicológicos",
+        "  Quiebra emocional espontánea",
+        "* Si un premio te sigue a casa, simplemente ponle una nota que diga:",
+        "  “NO, GRACIAS”",
+        "  ...y espera consecuencias místicas.",
+        "🎤 CIERRE CORPORATIVO",
+        "¡Inscríbete ya!",
+        "No necesitas dinero (pero definitivamente ayuda).",
+        "No necesitas alma (aunque... si la tienes, mejor).",
+        "Solo necesitas una conexión a internet y muy pocas expectativas.",
+        "Slash-Ta-Blook™ cree en ti.",
+        "O al menos en tu número de tarjeta."
+      ];
+      let dialogueIndex = 0;
+      let descriptionIndex = 0;
+      const dialogueText = document.getElementById("dialogueText");
+      const descriptionText = document.getElementById("descriptionText");
+      const prizesContainer = document.getElementById("prizes");
+      const dialogueBox = document.querySelector('.dialogue-box');
+      const descriptionBox = document.querySelector('.description-box');
+      function revealPrizes() {
+        prizesContainer.classList.add('visible');
+        const items = prizesContainer.querySelectorAll('.prize');
+        items.forEach((el, i) => {
+          setTimeout(() => el.classList.add('visible'), i * 200);
+        });
+      }
+      dialogueBox.addEventListener('click', () => {
+        if (dialogueIndex < dialogueLines.length) {
+          dialogueText.innerText = dialogueLines[dialogueIndex++];
+        }
+      });
+      descriptionBox.addEventListener('click', () => {
+        if (descriptionIndex < descriptionLines.length) {
+          descriptionText.innerText = descriptionLines[descriptionIndex++];
+          if (descriptionIndex === descriptionLines.length) {
+            revealPrizes();
+          }
+        }
+      });
+      // Monedas cayendo
+      const coinImg = "https://i.postimg.cc/L5npNSCD/money.png";
+      setInterval(() => {
+        const coin = document.createElement("img");
+        coin.src = coinImg;
+        coin.className = "coin";
+        coin.style.left = Math.random() * 100 + "vw";
+        coin.style.animationDuration = 3 + Math.random() * 2 + "s";
+        document.body.appendChild(coin);
+        setTimeout(() => coin.remove(), 5000);
+      }, 400);
+      // Globos subiendo
+      const balloonLinks = [
+        "https://i.postimg.cc/MHsSmNKx/pixil-frame-0-17.png",
+        "https://i.postimg.cc/dQWPpMwc/imagen-2025-06-08-120206349-removebg-preview.png",
+        "https://i.postimg.cc/kXVZHBTW/imagen-2025-06-08-115859691-removebg-preview.png"
+      ];
+      setInterval(() => {
+        const balloon = document.createElement("img");
+        balloon.src = balloonLinks[Math.floor(Math.random() * balloonLinks.length)];
+        balloon.className = "balloon";
+        balloon.style.left = Math.random() * 100 + "vw";
+        balloon.style.width = (30 + Math.random() * 40) + "px";
+        balloon.style.animationDuration = 12 + Math.random() * 5 + "s";
+        document.body.appendChild(balloon);
+        setTimeout(() => balloon.remove(), 15000);
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
